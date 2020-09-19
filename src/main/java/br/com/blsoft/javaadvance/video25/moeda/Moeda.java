@@ -1,51 +1,46 @@
 package br.com.blsoft.javaadvance.video25.moeda;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class Moeda {
     
     private BigDecimal valor;
+    private static int CASAS_DECIMAIS = 2;
     private static final String UNIDADE_MONETARIA = "R$";
     private static final DecimalFormat FORMATO = new DecimalFormat(UNIDADE_MONETARIA + " #,###,##0.00");
 
-    public Moeda(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public Moeda(String valor) {
+    public Moeda(String valor){
         this.valor = new BigDecimal(valor);
     }
 
-    public void somarCom(BigDecimal valor) {
-        this.valor = this.valor.add(valor);
+    public void somarCom(String valorASomar){
+        this.valor = this.valor.add(new BigDecimal(valorASomar));
     }
 
-    public void subtrair(BigDecimal valor) {
-        this.valor = this.valor.subtract(valor);
+    public void subtrair(String valorASubtrair){
+        this.valor = this.valor.subtract(new BigDecimal(valorASubtrair));
     }
 
-    public void multiplicarPor(BigDecimal valor) {
-        this.valor = this.valor.multiply(valor);
+    public void multiplicar(String valorAMultiplicar){
+        this.valor = this.valor.multiply(new BigDecimal(valorAMultiplicar));
     }
 
-    public void dividirPor(BigDecimal valor) throws Exception {
-        if (valor.compareTo(BigDecimal.ZERO) == 0) {
-            throw new Exception("Ops! Erro ao dividir " + this.valor + " por " + valor);
-        } else {
-            this.valor = this.valor.divide(valor);
+    public void dividirPor(BigDecimal valorADividir){
+        if(valorADividir.compareTo(BigDecimal.ZERO) == 0){
+            System.out.println("não posso dividir por zero");
+        }else{
+            this.valor = this.valor.divide(valorADividir, CASAS_DECIMAIS, RoundingMode.HALF_EVEN);
         }
     }
 
-    public String getValorFormatado() {
-        return FORMATO.format(this.valor);
-    }
-
-    public BigDecimal getValor() {
+    public BigDecimal getValor(){
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
+    public String getValorFormatado(){
+        return FORMATO.format(valor);
     }
+
 }
